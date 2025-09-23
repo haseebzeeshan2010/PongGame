@@ -683,7 +683,7 @@ Transform:
   m_GameObject: {fileID: 730926480}
   serializedVersion: 2
   m_LocalRotation: {x: -0.07258206, y: -0.010917266, z: -0.10422732, w: 0.9918414}
-  m_LocalPosition: {x: -6.05, y: 4.37, z: 15.288482}
+  m_LocalPosition: {x: -6.05, y: 3.04, z: 15.288482}
   m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1580,7 +1580,7 @@ GameObject:
   - component: {fileID: 1682264109}
   - component: {fileID: 1682264108}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: PlayText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
