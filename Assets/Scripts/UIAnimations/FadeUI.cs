@@ -8,6 +8,8 @@ public class FadeUI : MonoBehaviour
     [Header("Fade Settings")]
     [SerializeField] private float fadeInDuration = 0.5f;
     [SerializeField] private float fadeOutDuration = 0.5f;
+    [SerializeField] private float fadeInDelay = 0f;
+    [SerializeField] private float fadeOutDelay = 0f;
     [SerializeField] private AnimationCurve fadeInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [SerializeField] private AnimationCurve fadeOutCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     
@@ -45,7 +47,7 @@ public class FadeUI : MonoBehaviour
     }
     
     /// <summary>
-    /// Fades the UI element in or out
+    /// Fades the UI element in or out with an optional delay.
     /// </summary>
     /// <param name="fadeIn">True to fade in, false to fade out</param>
     public void Fade(bool fadeIn)
@@ -58,6 +60,7 @@ public class FadeUI : MonoBehaviour
         
         float targetAlpha = fadeIn ? 1f : 0f;
         float duration = fadeIn ? fadeInDuration : fadeOutDuration;
+        float delay = fadeIn ? fadeInDelay : fadeOutDelay;
         AnimationCurve curve = fadeIn ? fadeInCurve : fadeOutCurve;
         
         // Configure the UI element based on fade direction
@@ -67,8 +70,9 @@ public class FadeUI : MonoBehaviour
             canvasGroup.interactable = true;
         }
         
-        // Create the tween
+        // Create the tween with the specified delay
         currentTween = canvasGroup.DOFade(targetAlpha, duration)
+            .SetDelay(delay)
             .SetEase(curve)
             .OnComplete(() => {
                 if (!fadeIn)
@@ -85,7 +89,7 @@ public class FadeUI : MonoBehaviour
     }
     
     /// <summary>
-    /// Convenience method to fade in
+    /// Convenience method to fade in.
     /// </summary>
     public void FadeIn()
     {
@@ -93,7 +97,7 @@ public class FadeUI : MonoBehaviour
     }
     
     /// <summary>
-    /// Convenience method to fade out
+    /// Convenience method to fade out.
     /// </summary>
     public void FadeOut()
     {
