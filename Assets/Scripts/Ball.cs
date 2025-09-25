@@ -8,10 +8,42 @@ public class Ball : MonoBehaviour
     [SerializeField] private Rigidbody ballRigidbody;
     [SerializeField] private float bounceMultiplier = 1.1f;
 
+    [SerializeField] private bool playerEnabled = true;
+    [SerializeField] private float launchForce = 15f;
+
     [SerializeField] private float maxSpeed = 30f;
+
+    [SerializeField] private AudioClip wallHitSound;
+    [SerializeField] private AudioClip paddleHitSound;
+    [SerializeField] private AudioSource audioSource;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void StartMatch()
     {
+
+        // targetRigidbody.linearVelocity = new Vector3(Random.Range(-launchForce, launchForce), 0, launchForce);
+
+        if (playerEnabled)
+        {
+            ballRigidbody.linearVelocity = new Vector3(Random.Range(-launchForce, launchForce), 0, -launchForce);
+            transform.localPosition = new Vector3(0, 0f, 12.25f);
+        }
+        else
+        {
+            // Set a random direction in the horizontal (x-z) plane with a fixed magnitude (launchForce)
+            float angle = Random.Range(0f, 2f * Mathf.PI);
+            Vector3 direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+            ballRigidbody.linearVelocity = direction * launchForce;
+            transform.localPosition = new Vector3(Random.Range(-7f, 7f), 0f, 12.25f);
+        }
+        transform.localPosition = new Vector3(0f, 0f, transform.localPosition.z);
+
+    }
+
+    public void ResetBall()
+    {
+        Debug.Log("Resetting Ball");
+        ballRigidbody.linearVelocity = Vector3.zero;
+        transform.localPosition = new Vector3(0f, 0f, 12.25f);
     }
 
     // Update is called once per frame
@@ -37,6 +69,8 @@ public class Ball : MonoBehaviour
         // Handle collisions with paddles
         if (collision.gameObject.TryGetComponent<PongAgent>(out PongAgent pongAgent))
         {
+            audioSource.clip = paddleHitSound;
+            audioSource.Play();
             // Increase the ball's speed when hitting a paddle
             ballRigidbody.linearVelocity *= bounceMultiplier;
 
@@ -47,6 +81,11 @@ public class Ball : MonoBehaviour
                 currentVelocity.z *= 1.2f; // Multiply the z velocity by 1.2
                 ballRigidbody.linearVelocity = currentVelocity;
             }
+        }
+        else
+        {
+            audioSource.clip = wallHitSound;
+            audioSource.Play();
         }
 
         // Handle collisions with bounce walls
