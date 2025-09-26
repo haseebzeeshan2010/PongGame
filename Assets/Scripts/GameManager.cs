@@ -12,10 +12,18 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private AudioClip readySound;
     [SerializeField] private AudioClip goSound;
+
+    [SerializeField] private int winningScore = 10;
+    private int playerScore = 0;
+    private int opponentScore = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // ball.StartMatch();
+
+        //Subscribe to score events
+        ScoreText.OnOpponentScoreChanged += HandleOpponentScoreChanged;
+        ScoreText.OnPlayerScoreChanged += HandlePlayerScoreChanged;
     }
 
     // Update is called once per frame
@@ -48,6 +56,38 @@ public class GameManager : MonoBehaviour
         TimerText.text = "";
         ball.StartMatch();
     }
-    
-    
+
+
+    private void HandleOpponentScoreChanged(int newScore)
+    {
+        opponentScore = newScore;
+        CheckWin();
+    }
+
+    private void HandlePlayerScoreChanged(int newScore)
+    {
+        playerScore = newScore;
+        CheckWin();
+    }
+
+    private void CheckWin()
+    {
+        if (playerScore >= winningScore)
+        {
+            Debug.Log("Player Wins!");
+            // ResetScores();
+            // BeginRound();
+        }
+        else if (opponentScore >= winningScore)
+        {
+            Debug.Log("Opponent Wins!");
+            // ResetScores();
+            // BeginRound();
+        }
+        else
+        {
+            BeginRound();
+        }
+    }
+
 }

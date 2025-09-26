@@ -12,8 +12,6 @@ public class PongAgent : Agent
     [SerializeField] private Rigidbody targetRigidbody;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private bool isPlayer = false;
-    
-    [SerializeField] private GameManager gameManager;
 
     
     public override void OnEpisodeBegin()
@@ -23,7 +21,6 @@ public class PongAgent : Agent
         if (isPlayer)
         {
             Debug.Log("Episode Begin for Agent" + gameObject.name);
-            gameManager.BeginRound();
         }
 
 
