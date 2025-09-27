@@ -13,7 +13,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip readySound;
     [SerializeField] private AudioClip goSound;
 
+    [SerializeField] private AudioSource winloseSound;
+
     [SerializeField] private int winningScore = 10;
+
+    [SerializeField] private GameObject playerWin;
+    [SerializeField] private GameObject opponentWin;
     private int playerScore = 0;
     private int opponentScore = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -61,12 +66,16 @@ public class GameManager : MonoBehaviour
     private void HandleOpponentScoreChanged(int newScore)
     {
         opponentScore = newScore;
+        winloseSound.pitch = 0.8f;
+        winloseSound.Play();
         CheckWin();
     }
 
     private void HandlePlayerScoreChanged(int newScore)
     {
         playerScore = newScore;
+        winloseSound.pitch = 1f;
+        winloseSound.Play();
         CheckWin();
     }
 
@@ -75,12 +84,14 @@ public class GameManager : MonoBehaviour
         if (playerScore >= winningScore)
         {
             Debug.Log("Player Wins!");
+            playerWin.SetActive(true);
             // ResetScores();
             // BeginRound();
         }
         else if (opponentScore >= winningScore)
         {
             Debug.Log("Opponent Wins!");
+            opponentWin.SetActive(true);
             // ResetScores();
             // BeginRound();
         }
