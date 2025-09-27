@@ -19,10 +19,15 @@ public class SceneChanger : MonoBehaviour
     {
         SceneManager.LoadScene("DifficultySelect");
     }
-    
+
 
     public void NormalMode()
     {
         SceneManager.LoadScene("NormalMode");
+    }
+    
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

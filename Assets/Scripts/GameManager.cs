@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject playerWin;
     [SerializeField] private GameObject opponentWin;
+
+    [SerializeField] private FadeUI restartUI;
+    [SerializeField] private FadeUI continueUI;
     private int playerScore = 0;
     private int opponentScore = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,6 +32,8 @@ public class GameManager : MonoBehaviour
         //Subscribe to score events
         ScoreText.OnOpponentScoreChanged += HandleOpponentScoreChanged;
         ScoreText.OnPlayerScoreChanged += HandlePlayerScoreChanged;
+
+        BeginRound();
     }
 
     // Update is called once per frame
@@ -74,9 +79,13 @@ public class GameManager : MonoBehaviour
     private void HandlePlayerScoreChanged(int newScore)
     {
         playerScore = newScore;
+        CheckWin();
+
+        
+        if (winloseSound == null) return;
         winloseSound.pitch = 1f;
         winloseSound.Play();
-        CheckWin();
+        
     }
 
     private void CheckWin()
@@ -85,6 +94,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Player Wins!");
             playerWin.SetActive(true);
+            continueUI.FadeIn();
             // ResetScores();
             // BeginRound();
         }
@@ -92,6 +102,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Opponent Wins!");
             opponentWin.SetActive(true);
+            restartUI.FadeIn();
             // ResetScores();
             // BeginRound();
         }

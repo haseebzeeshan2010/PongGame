@@ -13,7 +13,7 @@ public class ScoreText : MonoBehaviour
     void Start()
     {
         currentScore = int.Parse(opponentScoreText.text);
-        OnPlayerScoreChanged?.Invoke(currentScore);
+        // OnPlayerScoreChanged?.Invoke(currentScore);
     }
 
     // Update is called once per frame
