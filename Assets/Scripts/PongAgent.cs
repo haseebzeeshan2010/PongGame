@@ -22,8 +22,19 @@ public class PongAgent : Agent
         {
             Debug.Log("Episode Begin for Agent" + gameObject.name);
         }
-
-
+    }
+    public void ClampPosition()
+    {
+        if (agentRigidbody.position.x < -12.5f)
+        {
+            agentRigidbody.position = new Vector3(-12.5f, agentRigidbody.position.y, agentRigidbody.position.z);
+            agentRigidbody.linearVelocity = new Vector3(0f, 0f, agentRigidbody.linearVelocity.z);
+        }
+        else if (agentRigidbody.position.x > 12.5f)
+        {
+            agentRigidbody.position = new Vector3(12.5f, agentRigidbody.position.y, agentRigidbody.position.z);
+            agentRigidbody.linearVelocity = new Vector3(0f, 0f, agentRigidbody.linearVelocity.z);
+        }
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -59,7 +70,7 @@ public class PongAgent : Agent
             sensor.AddObservation(distanceToTarget);
         }
 
-        
+
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -67,10 +78,11 @@ public class PongAgent : Agent
         // Get the discrete action (0: left, 1: idle, 2: right)
         int discreteAction = actions.DiscreteActions[0];
         // Convert discrete action to movement value: -1, 0, or 1.
-        float moveX = discreteAction - 1; 
+        float moveX = discreteAction - 1;
 
         agentRigidbody.AddForce(new Vector3(moveX, 0, 0) * Time.deltaTime * moveSpeed);
         // Debug.Log("Discrete Action: " + discreteAction);
+        ClampPosition();
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -85,6 +97,8 @@ public class PongAgent : Agent
             discreteActions[0] = 2; // move right
         else
             discreteActions[0] = 1; // no movement
+
+        ClampPosition();
     }
 
     private void OnTriggerEnter(Collider other)
