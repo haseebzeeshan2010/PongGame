@@ -3,34 +3,38 @@ using UnityEngine;
 public class PunishmentWall : MonoBehaviour
 {
     [SerializeField] private PongAgent punishedAgent;
-
     [SerializeField] private PongAgent rewardedAgent;
     [SerializeField] private ScoreText scoreText;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Ball>(out Ball ball3) && rewardedAgent != null) // Reward the other agent
+        if (other.TryGetComponent<Ball>(out Ball ball))
         {
-            rewardedAgent.AddReward(5.0f);
+            // Reward the other agent
+            if (rewardedAgent != null)
+            {
+                rewardedAgent.AddReward(5.0f);
+            }
+
+            // Punish this agent
+            if (punishedAgent != null)
+            {
+                punishedAgent.Punish();
+            }
+
+            // Increment opponent score
+            if (scoreText != null)
+            {
+                scoreText.IncrementOpponentScore();
+            }
         }
-        
-        if (other.TryGetComponent<Ball>(out Ball ball)) // Punish this agent
-        {
-            punishedAgent.Punish();
-        }
-        if (other.TryGetComponent<Ball>(out Ball ball2) && scoreText != null) // Increment opponent score
-        {
-            scoreText.IncrementOpponentScore();
-        }
+    }
+
+    private void OnDisable()
+    {
+        // Clear references when the object is disabled (e.g., on scene reload)
+        punishedAgent = null;
+        rewardedAgent = null;
+        scoreText = null;
     }
 }
