@@ -15,6 +15,13 @@ public class TaskAnimation : MonoBehaviour
     {
         m_RectTransform = GetComponent<RectTransform>();
         m_CanvasGroup = GetComponent<CanvasGroup>();
+
+        InputStage.TaskComplete += PlayTaskAnimation;
+    }
+
+    private void OnDestroy()
+    {
+        InputStage.TaskComplete -= PlayTaskAnimation;
     }
 
     //FOR DEBUGGING PURPOSES

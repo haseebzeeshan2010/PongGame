@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class InputStage : MonoBehaviour
 {
+
+    public static event System.Action TaskComplete;
+    
     private bool actionExecuted = false; // Flag to ensure the action is executed only once
 
     // Update is called once per frame
@@ -9,7 +12,7 @@ public class InputStage : MonoBehaviour
     {
         float horizontalInput = -Input.GetAxisRaw("Horizontal");
         // Check for input (e.g., space key) and if the action hasn't been executed yet
-        if (horizontalInput == 0 && !actionExecuted)
+        if (horizontalInput != 0 && !actionExecuted)
         {
             ExecuteAction();
             actionExecuted = true; // Set the flag to true to prevent further execution
@@ -20,5 +23,7 @@ public class InputStage : MonoBehaviour
     {
         // Your one-time action logic here
         Debug.Log("Action executed!");
+
+        TaskComplete?.Invoke();
     }
 }
