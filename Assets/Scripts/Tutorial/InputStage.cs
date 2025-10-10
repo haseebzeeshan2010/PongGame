@@ -1,10 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class InputStage : MonoBehaviour
 {
+    public TutorialGameManager tutorialGameManager;
+    public TaskManager TaskManager; // Reference to the TaskManager to notify when the action is complete
 
-    public static event System.Action TaskComplete;
-    
     private bool actionExecuted = false; // Flag to ensure the action is executed only once
 
     // Update is called once per frame
@@ -24,6 +25,14 @@ public class InputStage : MonoBehaviour
         // Your one-time action logic here
         Debug.Log("Action executed!");
 
-        TaskComplete?.Invoke();
+        TaskManager?.CompleteTask();
+        StartCoroutine(TimedRound(1f));
+        
+    }
+    
+    IEnumerator TimedRound(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        tutorialGameManager.BeginRound();
     }
 }
