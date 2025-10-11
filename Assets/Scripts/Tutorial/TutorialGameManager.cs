@@ -21,6 +21,9 @@ public class TutorialGameManager : MonoBehaviour
 
     [SerializeField] private FadeUI restartUI;
     [SerializeField] private FadeUI continueUI;
+
+    public TaskManager TaskManager; // Reference to the TaskManager to notify when the action is complete
+
     private int playerScore = 0;
     private int opponentScore = 0;
 
@@ -117,6 +120,7 @@ public class TutorialGameManager : MonoBehaviour
             Debug.Log("Player Wins!");
             playerWin.SetActive(true);
             continueUI.FadeIn();
+            TaskManager?.CompleteTask(); // Notify the TaskManager that the task is complete
             // ResetScores();
             // BeginRound();
         }
